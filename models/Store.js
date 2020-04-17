@@ -1,25 +1,35 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 var Store = new mongoose.Schema({
-    name:String,
-    auth_key:String,
-    max_customer:Number,
+  name: String,
+  auth_key: String,
+  max_customer: Number,
 
-    location:{
-        lat:String,
-        long:String
+  location: {
+    type: {
+      type: String, // Don't do `{ location: { type: String } }`
+      enum: ["Point"], // 'location.type' must be 'Point'
+      required: true,
     },
-    queue:[{
-        queue_id:String,
-        time_slot:Number,
-        in_queue:[{
-            user_id:String
-        }],
-        status:String
-    }]
-})
+    coordinates: {
+      type: [Number],
+      required: true,
+    },
+  },
+  queue: [
+    {
+      queue_id: String,
+      time_slot: Number,
+      in_queue: [
+        {
+          user_id: String,
+        },
+      ],
+      status: String,
+    },
+  ],
+});
 
-mongoose.model('Store', Store);
+var model = mongoose.model("Store", Store);
 
-
-
+module.exports = model

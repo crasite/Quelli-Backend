@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const QR = require('../../modules/qr/qr')
+const QR = require('../../modules/qr')
 
 router.get('/requestQR', (req, res) => {
     res.setHeader("content-type","image/png")
