@@ -6,19 +6,20 @@ const bodyParser = require('body-parser')
 const app = express()
 const port = 3000
 
+console.log("mongo_uri: "+process.env.MONGODB_URI)
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+mongoose.connect("mongodb://"+process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+
+
 if (!isProduction) {
     app.use(errorhandler());
+    mongoose.set('debug', true);
+
 }
 
-if (isProduction) {
-    mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-} else {
-    mongoose.connect("mongodb://localhost:27017", { useNewUrlParser: true, useUnifiedTopology: true })
-    mongoose.set('debug', true);
-}
 
 require('./models/Test');
 
