@@ -1,7 +1,5 @@
 const router = require('express').Router();
 
-router.use('/ping', require('./api/ping'));
-router.use('/error', require('./api/error'));
-
+router.use('/test', require('./api/test'));
 
 module.exports = router;
