@@ -1,11 +1,13 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const errorhandler = require('errorhandler')
-
+const bodyParser = require('body-parser')
 
 const app = express()
 const port = 3000
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 if (!isProduction) {
     app.use(errorhandler());
@@ -17,6 +19,8 @@ if (isProduction) {
     mongoose.connect("mongodb://localhost:27017", { useNewUrlParser: true, useUnifiedTopology: true })
     mongoose.set('debug', true);
 }
+
+require('./models/Test');
 
 var isProduction = process.env.STAGE === 'production'
 console.log('Serving on stage: ' + process.env.STAGE)
