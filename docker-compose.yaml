@@ -1,0 +1,11 @@
+version: '3'
+services:
+  quelli:
+    ports:
+      - "3000:3000"
+    environment: 
+      - MONGODB_URI=mongo:27017
+    image: "quelli-backend:0.0.1"
+  mongo:
+    image: "mongo:4.2.5"
+    
