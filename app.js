@@ -6,22 +6,22 @@ const bodyParser = require('body-parser')
 const app = express()
 const port = 3000
 
-console.log("mongo_uri: "+process.env.MONGODB_URI)
+
+console.log("mongo_uri: " + process.env.MONGODB_URI)
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-mongoose.connect("mongodb://"+process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-
+mongoose.connect("mongodb://" + process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 if (!isProduction) {
     app.use(errorhandler());
     mongoose.set('debug', true);
-
+    require('./models/Test');
 }
 
-
-require('./models/Test');
+require('./models/Store');
+require('./models/User');
 
 var isProduction = process.env.STAGE === 'production'
 console.log('Serving on stage: ' + process.env.STAGE)
