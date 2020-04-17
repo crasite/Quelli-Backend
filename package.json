@@ -2,7 +2,7 @@
   "name": "hackatumcovid",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "qrcode": "^1.4.4"
+    "qrcode": "^1.4.4",
+    "errorhandler": "^1.5.1",
+    "mongoose": "^5.9.9"
   }
 }
