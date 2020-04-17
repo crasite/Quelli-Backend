@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 var Store = new mongoose.Schema({
   name: String,
+  store_id: String,
   auth_key: String,
   max_customer: Number,
 
@@ -30,6 +31,9 @@ var Store = new mongoose.Schema({
   ],
 });
 
+Store.index({ location: "2dsphere" });
+
 var model = mongoose.model("Store", Store);
 
-module.exports = model
+module.exports = model;
+
