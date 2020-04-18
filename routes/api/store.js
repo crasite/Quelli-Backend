@@ -53,6 +53,9 @@ router.put('/', (req, res) => {
 
 //model,store_id,user_id,time_slot,cb
 router.put("/queue", (req, res) => {
+    if (req.body.time_slot < 1000000000 || req.body.time_slot>9999999999){
+        return res.json({ error: "time_slot must be between 1000000000 & 9999999999" });
+    }
     QueueController.reserveSlot(
         StoreModel,
         req.body.store_id,
