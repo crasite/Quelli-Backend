@@ -21,6 +21,11 @@ router.put('/',(req,res)=>{
     store = new StoreModel({
         store_name:req.body.store_name,
         store_id:req.body.store_id,
+        auth_key:req.body.auth_key,
+        location:{
+            coordinates:req.body.location.coordinates,
+            type:req.body.location.type
+        }
     })
 
     store.save().then((result)=>{
