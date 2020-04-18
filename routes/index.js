@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const QR = require("../modules/qr");
-const locationHelper = require("../modules/location");
 const _ = require("lodash");
 
 router.use("/test", require("./api/test"));
@@ -22,14 +21,14 @@ router.get("/requestQR/:user_id/:location_id/:queue_id", (req, res) => {
 });
 
 router.get("/nearestStore/:long/:lat/:lim", (req, res) => {
-  locationHelper.findNearestStore(
-    req.app.get("storeModel"),
+  req.app.get("storeModel").findNearestStore(
     req.params.long,
     req.params.lat,
     Number(req.params.lim),
     (err, data) => {
+        console.log(err)
         var rs = _.map(data, (model) => {
-            return _.pick(model,["location","name"])
+            return _.pick(model,["location","name","distance"])
         })
       res.send(rs);
     }
