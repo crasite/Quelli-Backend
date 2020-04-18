@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const moment = require('moment');
 const mongoose_fuzzy_searching = require("mongoose-fuzzy-searching");
 
 var Store = new mongoose.Schema({
@@ -55,23 +56,52 @@ Store.index({ location: "2dsphere" });
  * @param {number} minDistance minimum distance in meter
  * @param {callback} (error, result)
  */
-Store.statics.findNearestStore = function(longtitude, latitude, limit, minDistance,cb) {
-  var minDistance = minDistance | 0
+Store.statics.findNearestStore = function (
+  longtitude,
+  latitude,
+  limit,
+  minDistance,
+  cb
+) {
+  var minDistance = minDistance | 0;
+  var date = new Date()
+  var lastPart = date.getHours()*2
+  if(date.getMinutes()>=30){
+    lastPart += 1
+  }
+  var timestamp = moment().format("YYYYMMDD")+lastPart
+  console.log(timestamp)
   this.aggregate([
     {
       $geoNear: {
-        near: { 
-          type: "Point", 
-          coordinates: [Number(longtitude), Number(latitude)] 
+        near: {
+          type: "Point",
+          coordinates: [Number(longtitude), Number(latitude)],
         },
         distanceField: "distance",
         minDistance: minDistance,
         spherical: true,
-      }
+      },
     },
-    {$limit: limit}
-  ])
-    .exec(cb);
+    { $limit: limit },
+    {
+      $project: {
+        _id: 0,
+        store_id: 1,
+        name: 1,
+        distance: 1,
+        queue: {
+          $filter: {
+            input: "$queue",
+            as: "q",
+            cond: {
+              $gte: ["$$q.time_slot", Number(timestamp)],
+            },
+          },
+        },
+      },
+    },
+  ]).exec(cb);
 };
 
 var model = mongoose.model("Store", Store);

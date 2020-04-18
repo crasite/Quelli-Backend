@@ -27,10 +27,7 @@ router.get("/nearestStore/:long/:lat/:lim/:minDistance?", (req, res) => {
     Number(req.params.lim),
     Number(req.params.minDistance) | 0,
     (err, data) => {
-        var rs = _.map(data, (model) => {
-            return _.pick(model,["location","name","distance"])
-        })
-      res.send(rs);
+      res.send(data);
     }
   );
 });
