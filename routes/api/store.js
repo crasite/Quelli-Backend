@@ -54,16 +54,22 @@ router.put("/queue", (req, res) => {
     )
 })
 
-router.get("/queue/", (req, res) => {
+router.post("/queue/", (req, res) => {
     from = 0
-    if (req.query.from){
-        from = req.query.from
+    if (req.body.from){
+        from = req.body.from
     }
     QueueController.getQueue(
         StoreModel,
-        req.query.user_id,
+        req.body.user_id,
         parseInt(from),
         (err,result)=>{
+            filter_result = result.map((item)=>{
+                item.queue = item.queue.filter((item2)=>{
+                    return item2.user_id == req.body.user_id &&
+                            item2.time_slot >= from
+                })
+            })
             res.json({ result: result });
 
         }
