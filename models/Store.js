@@ -15,6 +15,7 @@ var Store = new mongoose.Schema({
     type: String,
     required: true,
   },
+  store_image: Buffer,
 
   max_customer: {
     type: String,
