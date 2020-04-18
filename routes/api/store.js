@@ -59,7 +59,7 @@ router.put("/queue", (req, res) => {
         req.body.user_id,
         req.body.time_slot,
         (error,result)=>{
-            if(error || !result){
+            if(error){
                 return res.json({ error: error });
             }
             return res.json({ queue_id: result._id });

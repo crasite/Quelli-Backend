@@ -2,7 +2,7 @@
 isSlotAvailable = (model,store_id,user_id,time_slot,cb)=>{
     model.findOne({"store_id":store_id},(err,result)=>{
         if (!result || err){
-            return cb(false)
+            return cb("store not found",false)
         }
         current_timeslot = result.queue.filter((item)=>item.time_slot == time_slot)
     
@@ -11,17 +11,26 @@ isSlotAvailable = (model,store_id,user_id,time_slot,cb)=>{
 
         console.log("isQueueFree: " + isQueueFree)
         console.log("isAlreadyInQueue: " + isAlreadyInQueue)
-        return cb(isQueueFree && !isAlreadyInQueue)
+
+        if (!isQueueFree){
+            cb("time slot is full",false)
+        }
+
+        if(isAlreadyInQueue){
+            cb("aleady in queue on timeslot")
+        }
+
+        return cb(null,true)
 
     })
     
 }
 
 reserveSlot = (model,store_id,user_id,time_slot,cb)=>{
-    isSlotAvailable(model,store_id,user_id,time_slot,(isAvailable)=>{
+    isSlotAvailable(model,store_id,user_id,time_slot,(err,isAvailable)=>{
         if (!isAvailable){
             console.log("not avaliable")
-            cb("unable to join queue",{})
+            cb(err,{})
         }else{
             console.log("avaliable")
             queueItem = {
