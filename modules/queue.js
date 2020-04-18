@@ -44,14 +44,10 @@ reserveSlot = (model, userModel, store_id, user_id, time_slot, cb) => {
       model
         .findOneAndUpdate(
           { store_id: store_id },
-          { $push: { queue: queueItem } }
+          { $push: { queue: queueItem } },
+          cb
         )
-        .exec((err, data) => {
-          userModel.findOne({ user_id: user_id }, (err, res) => {
-            res.addQueue(queueItem.queue_id, store_id, time_slot, queueItem.status);
-          });
-          cb(err, data);
-        });
+    
     }
   });
 };
@@ -70,6 +66,7 @@ checkAvailability = (model,store_id,time_slot,cb)=>{
       return cb("store not found", false);
     }
     taken = result.queue.filter((item)=> item.time_slot == time_slot)
+    
     cb(err,{
       "store_id":result.store_id,
       "time_slot":time_slot,

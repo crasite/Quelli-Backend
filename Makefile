@@ -1,4 +1,4 @@
-VERSION=0.0.4
+VERSION=0.0.6
 
 serve:
 	MONGODB_URI=localhost:27017 STAGE=dev node app.js
