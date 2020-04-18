@@ -54,8 +54,20 @@ router.put("/queue", (req, res) => {
     )
 })
 
-router.get("/queue", (req, res) => {
-    return res.json({ error: "implementing :D" });
+router.get("/queue/", (req, res) => {
+    from = 0
+    if (req.query.from){
+        from = req.query.from
+    }
+    QueueController.getQueue(
+        StoreModel,
+        req.query.user_id,
+        parseInt(from),
+        (err,result)=>{
+            res.json({ result: result });
+
+        }
+    )
 })
 
 

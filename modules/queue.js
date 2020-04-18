@@ -40,8 +40,10 @@ reserveSlot = (model,store_id,user_id,time_slot,cb)=>{
 }
 
 
-getQueue = (model,user_id,cb)=>{
-    model.find({"queue.user_id":user_id},cb)
+getQueue = (model,user_id,from,cb)=>{
+    // model.find({"queue.user_id":user_id},cb)
+    model.find({"queue.user_id":user_id,"queue.time_slot":{$gte:from}},cb)
+
 }
 
 module.exports.reserveSlot = reserveSlot;
