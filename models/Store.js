@@ -9,6 +9,7 @@ var Store = new mongoose.Schema({
   store_id: {
     type:String,
     required: true,
+    unique:true
   },
   auth_key: {
     type:String,

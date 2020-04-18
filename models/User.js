@@ -1,8 +1,15 @@
 const mongoose = require('mongoose')
 
 var User = new mongoose.Schema({
-    name:String,
-    user_id:String,
+    user_name: {
+        type:String,
+        required: true,
+    },
+    user_id: {
+        type:String,
+        required: true,
+        unique:true
+    },
     queue:[{
         queue_id:String,
         store_id:String,
