@@ -1,4 +1,4 @@
-VERSION=0.0.1
+VERSION=0.0.2
 
 serve:
 	MONGODB_URI=localhost:27017 STAGE=dev node app.js
@@ -9,5 +9,8 @@ mongo:
 docker-run:
 	docker run -p 3000:3000 quelli-backend:${VERSION}
 
-docker-build:
+docker-push:
+	docker login
 	docker build -t quelli-backend:${VERSION} . 
+	docker tag quelli-backend:${VERSION} paichana/quelli-backend:${VERSION}
+	docker push paichana/quelli-backend:${VERSION}
