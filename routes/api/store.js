@@ -97,4 +97,16 @@ router.post("/queue/", (req, res) => {
   );
 });
 
+router.post("/queue/availability",(req,res)=>{
+  QueueController.checkAvailability(StoreModel,req.body.store_id,req.body.time_slot,
+    (err,result)=>{
+      if (err){
+        res.json({error:err})
+      }else{
+        res.json(result)
+
+      }
+    })
+})
+
 module.exports = router;
