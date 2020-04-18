@@ -12,7 +12,6 @@ router.get('/', (req, res) => {
         return res.json({
             "search_text":text,
             "stores":result,
-            "err":err
         })
     })
 })
