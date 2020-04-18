@@ -1,37 +1,43 @@
 
-isSlotAvailable = (model,store_id,time_slot)=>{
-    model.find({"store_id":store_id})
-        .exec((err,results)=>{
-            if (results.length==0){
-                return false
-            }
-            console.log("storequeue: "+results) //  ตรงนี้นะ
-            console.log("storequeue: "+results.id) // 
-            console.log("serr "+err)
+isSlotAvailable = (model,store_id,user_id,time_slot,cb)=>{
+    model.findOne({"store_id":store_id},(err,result)=>{
+        if (!result || err){
+            return cb(false)
+        }
+        current_timeslot = result.queue.filter((item)=>item.time_slot == time_slot)
+    
+        isQueueFree = current_timeslot.length < result.max_customer
+        isAlreadyInQueue = current_timeslot.some((item)=>item.user_id==user_id)
 
-            return true
-            taken = results.queue.filter(q => q.time_slot == time_slot).count
-            return taken<results.max_customer
-        })
+        console.log("isQueueFree: " + isQueueFree)
+        console.log("isAlreadyInQueue: " + isAlreadyInQueue)
+        return cb(isQueueFree && !isAlreadyInQueue)
 
+    })
+    
 }
 
 reserveSlot = (model,store_id,user_id,time_slot,cb)=>{
-    isAvaliable = isSlotAvailable(model,store_id,time_slot)
-    if (!isAvaliable){
-        cb("store not found",{})
-        return
-    }
-    queueItem = {
-        user_id:user_id,
-        time_slot:time_slot,
-        status:"reserved"
-    }
-    model.findOneAndUpdate(
-        {store_id:store_id},
-        {new:true},
-        {$push:{queue:queueItem}}
-    ).exec(cb)
+    isSlotAvailable(model,store_id,user_id,time_slot,(isAvailable)=>{
+        if (!isAvailable){
+            console.log("not avaliable")
+            cb("store not available",{})
+        }else{
+            console.log("avaliable")
+            queueItem = {
+                user_id:user_id,
+                time_slot:time_slot,
+                status:"reserved"
+            }
+
+            model.findOneAndUpdate(
+                {store_id:store_id},
+                {new:true},
+                {$push:{queue:queueItem}}
+            ).exec(cb)
+        }
+    })
+    
 }
 
 
