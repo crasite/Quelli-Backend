@@ -18,6 +18,18 @@ router.get('/', (req, res) => {
     })
 })
 
+router.get('/:store_id', (req, res) => {
+    StoreModel.findOne({"store_id":req.params.store_id},
+    (err,result)=>{
+        if (err){
+            res.json({error: err})
+        }
+        return res.json({
+            "store": result,
+        })
+    })
+})
+
 router.put('/', (req, res) => {
     store = new StoreModel({
         store_name: req.body.store_name,
@@ -26,7 +38,8 @@ router.put('/', (req, res) => {
         location: {
             coordinates: req.body.location.coordinates,
             type: req.body.location.type
-        }
+        },
+        max_customer: req.body.max_customer
     })
 
     store.save().then((result) => {
