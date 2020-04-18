@@ -50,6 +50,30 @@ Store.plugin(mongoose_fuzzy_searching,{fields:["store_name"]})
 
 Store.index({ location: "2dsphere"});
 
+/**
+ * 
+ * @param {Double} longtitude 
+ * @param {Double} latitude 
+ * @param {number} limit 
+ * @param {callback} (error, result)
+ */
+Store.statics.findNearestStore = (longtitude, latitude, limit, cb) => {
+  this.find({
+    location: {
+      $nearSphere: {
+        $geometry: {
+          type: "Point",
+          coordinates: [longtitude, latitude],
+        },
+      },
+    },
+  })
+  .limit(limit)
+  .exec(cb);
+}
+
+
+
 var model = mongoose.model("Store", Store);
 
 module.exports = model;

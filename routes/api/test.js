@@ -1,7 +1,5 @@
 const router = require('express').Router()
 const mongoose = require('mongoose')
-const locationHelper = require('../../modules/location')
-
 
 var Test = mongoose.model('Test');
 
@@ -12,7 +10,7 @@ router.get('/error', (req, res) => {
 router.get('/ping', (req, res) => res.send('Hello World!'))
 
 router.get('/store/:long/:lat/:lim', (req, res) => {
-    locationHelper.findNearestStore(req.app.get("storeModel"), req.params.long, req.params.lat, Number(req.params.lim), (err, data) => {
+    req.app.get("storeModel").findNearestStore(req.params.long, req.params.lat, Number(req.params.lim), (err, data) => {
         var text = ""
         for(i = 0;i<req.params.lim;i++){
             text += data[i].name + "</br>"
