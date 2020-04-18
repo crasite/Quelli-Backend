@@ -20,13 +20,13 @@ router.get("/requestQR/:user_id/:location_id/:queue_id", (req, res) => {
   );
 });
 
-router.get("/nearestStore/:long/:lat/:lim", (req, res) => {
+router.get("/nearestStore/:long/:lat/:lim/:minDistance?", (req, res) => {
   req.app.get("storeModel").findNearestStore(
     req.params.long,
     req.params.lat,
     Number(req.params.lim),
+    Number(req.params.minDistance) | 0,
     (err, data) => {
-        console.log(err)
         var rs = _.map(data, (model) => {
             return _.pick(model,["location","name","distance"])
         })
@@ -41,7 +41,6 @@ router.post("/requestQueue", (req, res) => {
         if(err){
             req.next(err)
         } else {
-            console.log(r)
             res.send(r)
         }
     })

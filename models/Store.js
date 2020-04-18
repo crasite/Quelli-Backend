@@ -55,19 +55,11 @@ Store.index({ location: "2dsphere" });
  * @param {Double} longtitude
  * @param {Double} latitude
  * @param {number} limit
+ * @param {number} minDistance minimum distance in meter
  * @param {callback} (error, result)
  */
-Store.statics.findNearestStore = function(longtitude, latitude, limit, cb) {
-  // this.find({
-  //   location: {
-  //     $nearSphere: {
-  //       $geometry: {
-  //         type: "Point",
-  //         coordinates: [longtitude, latitude],
-  //       },
-  //     },
-  //   },
-  // })
+Store.statics.findNearestStore = function(longtitude, latitude, limit, minDistance,cb) {
+  var minDistance = minDistance | 0
   this.aggregate([
     {
       $geoNear: {
@@ -76,6 +68,7 @@ Store.statics.findNearestStore = function(longtitude, latitude, limit, cb) {
           coordinates: [Number(longtitude), Number(latitude)] 
         },
         distanceField: "distance",
+        minDistance: minDistance,
         spherical: true,
       }
     },
