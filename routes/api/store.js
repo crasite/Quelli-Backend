@@ -28,9 +28,7 @@ router.get("/:store_id", (req, res) => {
     if (err) {
       res.json({ error: err });
     }
-    return res.json({
-      store: result,
-    });
+    return res.json(result);
   });
 });
 
@@ -94,7 +92,7 @@ router.post("/queue/", (req, res) => {
           return item2.user_id == req.body.user_id && item2.time_slot >= from;
         });
       });
-      res.json({ result: result });
+      res.json(result);
     }
   );
 });
