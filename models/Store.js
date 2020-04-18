@@ -2,10 +2,23 @@ const mongoose = require("mongoose");
 const mongoose_fuzzy_searching = require('mongoose-fuzzy-searching');
 
 var Store = new mongoose.Schema({
-  store_name: String,
-  store_id: String,
-  auth_key: String,
-  max_customer: Number,
+  store_name: {
+    type:String,
+    required: true,
+  },
+  store_id: {
+    type:String,
+    required: true,
+  },
+  auth_key: {
+    type:String,
+    required: true,
+  },
+
+  max_customer:{
+    type:String,
+    default:20
+  },
 
   location: {
     type: {
@@ -15,7 +28,7 @@ var Store = new mongoose.Schema({
     },
     coordinates: {
       type: [Number],
-      required: true,
+      // required: true,
     },
   },
   queue: [
