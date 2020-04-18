@@ -21,7 +21,7 @@ reserveSlot = (model,store_id,user_id,time_slot,cb)=>{
     isSlotAvailable(model,store_id,user_id,time_slot,(isAvailable)=>{
         if (!isAvailable){
             console.log("not avaliable")
-            cb("store not available",{})
+            cb("unable to join queue",{})
         }else{
             console.log("avaliable")
             queueItem = {
@@ -32,7 +32,6 @@ reserveSlot = (model,store_id,user_id,time_slot,cb)=>{
 
             model.findOneAndUpdate(
                 {store_id:store_id},
-                {new:true},
                 {$push:{queue:queueItem}}
             ).exec(cb)
         }
