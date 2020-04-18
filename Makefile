@@ -1,7 +1,7 @@
 VERSION=0.0.1
 
 serve:
-	MONGODB_URI=mongodb://localhost:27017 STAGE=production node app.js
+	MONGODB_URI=localhost:27017 STAGE=dev node app.js
 
 mongo:
 	docker run -p 27017:27017 mongo  

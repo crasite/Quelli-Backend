@@ -9,6 +9,8 @@ router.use("/test", require("./api/test"));
 /// http://localhost:3000/qrtest/requestQR?user_id=u1&location_id=lo1&queue_id=qu1gff
 router.use("/qrtest", require("./api/qrtest"));
 
+router.use("/store",require("./api/store"))
+
 router.get("/requestQR/:user_id/:location_id/:queue_id", (req, res) => {
   res.setHeader("content-type", "image/png");
   QR.generateQR(

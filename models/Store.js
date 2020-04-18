@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
+const mongoose_fuzzy_searching = require('mongoose-fuzzy-searching');
 
 var Store = new mongoose.Schema({
-  name: String,
+  store_name: String,
   store_id: String,
   auth_key: String,
   max_customer: Number,
@@ -31,7 +32,9 @@ var Store = new mongoose.Schema({
   ],
 });
 
-Store.index({ location: "2dsphere" });
+Store.plugin(mongoose_fuzzy_searching,{fields:["store_name"]})
+
+Store.index({ location: "2dsphere"});
 
 var model = mongoose.model("Store", Store);
 
