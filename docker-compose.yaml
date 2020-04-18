@@ -6,6 +6,7 @@ services:
     environment: 
       - MONGODB_URI=mongo:27017
     image: "paichana/quelli-backend:0.0.1"
+    restart: always
   mongo:
     ports:
       - "3333:27017"
