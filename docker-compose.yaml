@@ -5,7 +5,9 @@ services:
       - "3000:3000"
     environment: 
       - MONGODB_URI=mongo:27017
-    image: "quelli-backend:0.0.1"
+    image: "paichana/quelli-backend:0.0.1"
   mongo:
+    ports:
+      - "3333:27017"
     image: "mongo:4.2.5"
     
