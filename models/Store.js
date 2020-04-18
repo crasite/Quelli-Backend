@@ -36,11 +36,7 @@ var Store = new mongoose.Schema({
     {
       queue_id: String,
       time_slot: Number,
-      in_queue: [
-        {
-          user_id: String,
-        },
-      ],
+      user_id: String,
       status: String,
     },
   ],
