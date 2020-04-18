@@ -1,24 +1,24 @@
 const mongoose = require("mongoose");
-const mongoose_fuzzy_searching = require('mongoose-fuzzy-searching');
+const mongoose_fuzzy_searching = require("mongoose-fuzzy-searching");
 
 var Store = new mongoose.Schema({
   store_name: {
-    type:String,
+    type: String,
     required: true,
   },
   store_id: {
-    type:String,
+    type: String,
     required: true,
-    unique:true
+    unique: true,
   },
   auth_key: {
-    type:String,
+    type: String,
     required: true,
   },
 
-  max_customer:{
-    type:String,
-    default:20
+  max_customer: {
+    type: String,
+    default: 20,
   },
 
   location: {
@@ -42,35 +42,37 @@ var Store = new mongoose.Schema({
   ],
 });
 
-Store.plugin(mongoose_fuzzy_searching,{fields:["store_name"]})
+Store.plugin(mongoose_fuzzy_searching, { fields: ["store_name"] });
 
-Store.index({ location: "2dsphere"});
+Store.index({ location: "2dsphere" });
 
 /**
- * 
- * @param {Double} longtitude 
- * @param {Double} latitude 
- * @param {number} limit 
+ *
+ * @param {Double} longtitude
+ * @param {Double} latitude
+ * @param {number} limit
+ * @param {number} minDistance minimum distance in meter
  * @param {callback} (error, result)
  */
-Store.statics.findNearestStore = (longtitude, latitude, limit, cb) => {
-  this.find({
-    location: {
-      $nearSphere: {
-        $geometry: {
-          type: "Point",
-          coordinates: [longtitude, latitude],
+Store.statics.findNearestStore = function(longtitude, latitude, limit, minDistance,cb) {
+  var minDistance = minDistance | 0
+  this.aggregate([
+    {
+      $geoNear: {
+        near: { 
+          type: "Point", 
+          coordinates: [Number(longtitude), Number(latitude)] 
         },
-      },
+        distanceField: "distance",
+        minDistance: minDistance,
+        spherical: true,
+      }
     },
-  })
-  .limit(limit)
-  .exec(cb);
-}
-
-
+    {$limit: limit}
+  ])
+    .exec(cb);
+};
 
 var model = mongoose.model("Store", Store);
 
 module.exports = model;
-
