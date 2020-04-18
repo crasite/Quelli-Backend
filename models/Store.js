@@ -17,7 +17,7 @@ var Store = new mongoose.Schema({
   },
 
   max_customer: {
-    type: String,
+    type: Number,
     default: 20,
   },
 
