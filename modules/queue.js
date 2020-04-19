@@ -47,7 +47,17 @@ reserveSlot = (model, userModel, store_id, user_id, time_slot, cb) => {
           { $push: { queue: queueItem } },
           cb
         )
-    
+        .exec((err, data) => {
+          userModel.findOne({ user_id: user_id }, (err, res) => {
+            res.addQueue(
+              queueItem.queue_id,
+              store_id,
+              time_slot,
+              queueItem.status
+            );
+          });
+          cb(err, data);
+        });
     }
   });
 };
@@ -60,23 +70,21 @@ getQueue = (model, user_id, from, cb) => {
   );
 };
 
-checkAvailability = (model,store_id,time_slot,cb)=>{
-  model.findOne({"store_id":store_id},(err,result)=>{
+checkAvailability = (model, store_id, time_slot, cb) => {
+  model.findOne({ store_id: store_id }, (err, result) => {
     if (!result || err) {
       return cb("store not found", false);
     }
-    taken = result.queue.filter((item)=> item.time_slot == time_slot)
-    
-    cb(err,{
-      "store_id":result.store_id,
-      "time_slot":time_slot,
-      "avaliable":result.max_customer - taken.length,
-      "queue":taken
+    taken = result.queue.filter((item) => item.time_slot == time_slot);
 
-
-    })
-  })
-}
+    cb(err, {
+      store_id: result.store_id,
+      time_slot: time_slot,
+      avaliable: result.max_customer - taken.length,
+      queue: taken,
+    });
+  });
+};
 
 module.exports.reserveSlot = reserveSlot;
 module.exports.getQueue = getQueue;
