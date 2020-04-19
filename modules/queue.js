@@ -45,7 +45,6 @@ reserveSlot = (model, userModel, store_id, user_id, time_slot, cb) => {
         .findOneAndUpdate(
           { store_id: store_id },
           { $push: { queue: queueItem } },
-          cb
         )
         .exec((err, data) => {
           userModel.findOne({ user_id: user_id }, (err, res) => {
@@ -56,7 +55,7 @@ reserveSlot = (model, userModel, store_id, user_id, time_slot, cb) => {
               queueItem.status
             );
           });
-          cb(err, data);
+          cb(err, queueItem.queue_id);
         });
     }
   });

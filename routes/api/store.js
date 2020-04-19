@@ -71,7 +71,7 @@ router.put("/queue", (req, res) => {
       if (error) {
         res.json({ error: error });
       } else {
-        res.json({ queue_id: result._id });
+        res.json({ queue_id: result});
       }
     }
   );
