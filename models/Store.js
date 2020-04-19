@@ -3,7 +3,7 @@ const moment = require('moment');
 const mongoose_fuzzy_searching = require("mongoose-fuzzy-searching");
 
 var Store = new mongoose.Schema({
-  store_name: {
+  name: {
     type: String,
     required: true,
   },
@@ -44,7 +44,7 @@ var Store = new mongoose.Schema({
   ],
 });
 
-Store.plugin(mongoose_fuzzy_searching, { fields: ["store_name"] });
+Store.plugin(mongoose_fuzzy_searching, { fields: ["name"] });
 
 Store.index({ location: "2dsphere" });
 

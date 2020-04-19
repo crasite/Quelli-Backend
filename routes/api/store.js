@@ -34,7 +34,7 @@ router.get("/:store_id", (req, res) => {
 
 router.put("/", (req, res) => {
   store = new StoreModel({
-    store_name: req.body.store_name,
+    name: req.body.name,
     store_id: req.body.store_id,
     auth_key: req.body.auth_key,
     location: {
