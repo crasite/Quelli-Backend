@@ -14,7 +14,7 @@
     "errorhandler": "^1.5.1",
     "express": "^4.17.1",
     "file-type": "^14.1.4",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "moment": "^2.24.0",
     "mongoose": "^5.9.9",
     "mongoose-fuzzy-searching": "^1.1.9",
